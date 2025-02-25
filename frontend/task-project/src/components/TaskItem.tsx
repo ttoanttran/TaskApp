@@ -1,9 +1,29 @@
 import React from 'react'
+import { tasksContext } from '../App'
+import { useContext } from 'react'
 
-const TaskItem = () => {
+interface Props {
+  task: string
+}
+
+const TaskItem = ({task}: Props) => {
+
+  const context = useContext(tasksContext)
+
+  if (!context) {
+    return <div>No task</div>
+  }
+
+  const { handleDelete } = context
+
+  const handleClick = () => {
+    handleDelete(task)
+  }
+
   return (
     <div>
-      TaskItem
+      {task}
+      <button onClick={handleClick}>Delete</button>
     </div>
   )
 }
