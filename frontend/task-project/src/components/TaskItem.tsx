@@ -4,10 +4,10 @@ import { useContext } from 'react'
 
 interface Props {
   task: string
-  index: number
+  id: number
 }
 
-const TaskItem = ({task, index}: Props) => {
+const TaskItem = ({task, id}: Props) => {
 
   const context = useContext(tasksContext)
 
@@ -18,7 +18,7 @@ const TaskItem = ({task, index}: Props) => {
   const { handleDelete } = context
 
   const handleClick = () => {
-    handleDelete(index)
+    handleDelete(id)
   }
 
   return (

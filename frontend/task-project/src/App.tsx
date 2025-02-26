@@ -49,6 +49,8 @@ const App = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        setTasks((task) => [...task, data])
+        // {   } {   } {   } {   }, data
       } catch (error) {
         console.error("Error adding tasks", error)
       }
@@ -56,8 +58,44 @@ const App = () => {
     addTasks();
   }
 
-  const handleDelete = (item: number) => {
-    
+  const handleDelete = (id: number) => {
+    const deleteTasks = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        setTasks((prevTasks) => prevTasks.filter(task => id !== task.id))
+      } catch (error) {
+        console.error("Error deleting tasks", error)
+      }
+    }
+    deleteTasks()
+  }
+
+  const handleDeleteAll = () => {
+    const deleteAll = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/tasks/all', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("response not okay");
+        }
+        
+        setTasks([]);
+
+      } catch (error) {
+        console.error("Error deleting tasks", error)
+      }
+    }
+    deleteAll();
   }
 
   const value = {
@@ -69,6 +107,7 @@ const App = () => {
     <tasksContext.Provider value={value}>
       <div className='container'>
         <h1>Task Manager</h1>
+        <button className='form-button' onClick={handleDeleteAll}>Delete All</button>
         <TaskForm></TaskForm>
         <TaskList></TaskList>
       </div>

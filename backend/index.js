@@ -6,10 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let tasks = [
-  {id: 1, task: "Do laundry", completed: false},
-  {id: 1, task: "Do hw", completed: false}
-];
+let tasks = [];
 
 app.get('/tasks', (req, res) => {
   res.send(tasks)
@@ -22,11 +19,18 @@ app.post('/tasks', (req, res) => {
   res.status(200).json(newTask)
 })
 
-app.delete('/tasks/:id', (req, res) => {
-  const { id } = req.params;
-  tasks.filter(task => task.id !== parseInt(id))
+app.delete('/tasks/all', (req, res) => {
+  console.log("detelintg")
+  tasks = [];
   res.status(200).send();
 })
+
+app.delete('/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  tasks = tasks.filter(task => task.id !== parseInt(id))
+  res.status(200).send();
+})
+
 
 
 
