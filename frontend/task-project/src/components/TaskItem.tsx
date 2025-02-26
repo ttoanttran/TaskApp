@@ -4,9 +4,10 @@ import { useContext } from 'react'
 
 interface Props {
   task: string
+  index: number
 }
 
-const TaskItem = ({task}: Props) => {
+const TaskItem = ({task, index}: Props) => {
 
   const context = useContext(tasksContext)
 
@@ -17,13 +18,17 @@ const TaskItem = ({task}: Props) => {
   const { handleDelete } = context
 
   const handleClick = () => {
-    handleDelete(task)
+    handleDelete(index)
   }
 
   return (
-    <div>
-      {task}
-      <button onClick={handleClick}>Delete</button>
+    <div className='task-item'>
+      <div className='task-name'>
+        {task}
+      </div>
+      <div className='del-button'>
+        <button onClick={handleClick}>Delete</button>
+      </div>
     </div>
   )
 }

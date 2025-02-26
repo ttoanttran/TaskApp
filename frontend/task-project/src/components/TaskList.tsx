@@ -16,9 +16,9 @@ const TaskList = () => {
   
   return (
     <div>
-      <ul>
+      <ul className='task-list'>
         {tasks?.map((task, index) => 
-          <li key={index}><TaskItem task={task}></TaskItem></li>
+          <li key={index}><TaskItem task={task} index={index}></TaskItem></li>
         )}
       </ul>
     </div>

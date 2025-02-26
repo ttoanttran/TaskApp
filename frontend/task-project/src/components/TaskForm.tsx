@@ -1,11 +1,17 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useState, useContext } from "react"
+import { tasksContext } from "../App";
 
-interface Props {
-  handleAdd: (item: string) => void
-}
 
-const TaskForm = ({handleAdd}: Props) => {
+
+const TaskForm = () => {
   const [task, setTask] = useState("");
+  const context = useContext(tasksContext);
+
+  if (!context) {
+    return <div></div>
+  }
+
+  const { handleAdd } = context
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -15,13 +21,14 @@ const TaskForm = ({handleAdd}: Props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="task-form">
         <input 
           type="text"
           value={task}
           onChange={(event) => {setTask(event.target.value)}}
+          className="task-input"
         />
-        <button>Add</button>
+        <button className="form-button">Add</button>
       </form>
     </div>
   )

@@ -6,7 +6,7 @@ import './App.css'
 type TaskContextType = {
   tasks: string[];
   handleAdd: (task: string) => void;
-  handleDelete: (item: string) => void;
+  handleDelete: (item: number) => void;
 }
 
 export const tasksContext = createContext<TaskContextType | undefined>(undefined);
@@ -18,8 +18,8 @@ const App = () => {
     setTasks(prevTasks => [...prevTasks, task])
   }
 
-  const handleDelete = (item: string) => {
-    setTasks(tasks.filter(task => task !== item))
+  const handleDelete = (item: number) => {
+    setTasks(tasks.filter((_, i) => i !== item))
   }
 
   const value = {
@@ -31,7 +31,7 @@ const App = () => {
     <tasksContext.Provider value={value}>
       <div className='container'>
         <h1>Task Manager</h1>
-        <TaskForm handleAdd={handleAdd}></TaskForm>
+        <TaskForm></TaskForm>
         <TaskList></TaskList>
       </div>
     </tasksContext.Provider>
