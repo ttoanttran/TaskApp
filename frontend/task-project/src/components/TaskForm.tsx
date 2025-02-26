@@ -15,8 +15,12 @@ const TaskForm = () => {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    handleAdd(task)
-    setTask("")
+    if (task === "") {
+      alert("Cant add")
+    } else {
+      handleAdd(task)
+      setTask("")
+    }
   }
 
   return (
