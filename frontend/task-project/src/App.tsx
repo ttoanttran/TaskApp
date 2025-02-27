@@ -34,45 +34,40 @@ const App = () => {
     fetchTasks();
   }, [])
   
-  const handleAdd = (task: string) => {
-    const addTasks = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/tasks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({task: task}),
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setTasks((task) => [...task, data])
-        // {   } {   } {   } {   }, data
-      } catch (error) {
-        console.error("Error adding tasks", error)
+  const handleAdd = async (task: string) => {
+    try {
+      const response = await fetch('http://localhost:5000/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ task: task }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+      
+      const data = await response.json();
+      setTasks((prevTasks) => [...prevTasks, data]);
+  
+    } catch (error) {
+      console.error("Error adding task", error);
     }
-    addTasks();
-  }
+  };
 
-  const handleDelete = (id: number) => {
-    const deleteTasks = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/tasks/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        setTasks((prevTasks) => prevTasks.filter(task => id !== task.id))
-      } catch (error) {
-        console.error("Error deleting tasks", error)
-      }
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setTasks((prevTasks) => prevTasks.filter(task => id !== task.id))
+    } catch (error) {
+      console.error("Error deleting tasks", error)
     }
-    deleteTasks()
   }
 
   const handleDeleteAll = () => {

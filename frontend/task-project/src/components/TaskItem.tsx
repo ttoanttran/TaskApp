@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { tasksContext } from '../App'
 import { useContext } from 'react'
 
@@ -10,6 +10,7 @@ interface Props {
 const TaskItem = ({task, id}: Props) => {
 
   const context = useContext(tasksContext)
+  const [checked, setChecked] = useState<boolean>(false);
 
   if (!context) {
     return <div>No task</div>
@@ -21,9 +22,30 @@ const TaskItem = ({task, id}: Props) => {
     handleDelete(id)
   }
 
+  const handleCheck = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const data = await response.json();
+      setChecked(data.completed);
+    } catch (error) {
+      console.log("error checking box")
+    }
+  }
+
   return (
     <div className='task-item'>
-      <div className='task-name'>
+      <input 
+        type="checkbox"
+        checked= {checked}
+        onChange={handleCheck}
+      />
+      <div className={checked ? 'task-name-checked' : 'task-name'}>
         {task}
       </div>
       <div className='del-button'>

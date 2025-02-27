@@ -31,6 +31,17 @@ app.delete('/tasks/:id', (req, res) => {
   res.status(200).send();
 })
 
+app.put('/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  const found = tasks.find(task => task.id === id);
+  if (found.completed) {
+    found.completed = false;
+  } else {
+    found.completed = true;
+  }
+  res.status(200).json(found);
+})
+
 
 
 
