@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { tasksContext } from '../App'
 import { useContext } from 'react'
 
@@ -15,6 +15,27 @@ const TaskItem = ({task, id}: Props) => {
   if (!context) {
     return <div>No task</div>
   }
+
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/tasks/${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+        console.log(data);
+        setChecked(data.completed);
+        console.log(data.completed)
+      } catch (error) {
+        console.log("error fetching task");
+      }
+    }
+    fetchTask();
+  }, [])
 
   const { handleDelete } = context
 

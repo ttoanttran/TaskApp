@@ -12,6 +12,12 @@ app.get('/tasks', (req, res) => {
   res.send(tasks)
 })
 
+app.get('/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  foundTask = tasks.find(task => task.id === parseInt(id));
+  res.json(foundTask);
+})
+
 app.post('/tasks', (req, res) => {
   const { task } = req.body;
   const newTask = { id: Date.now(), task, completed: false}
@@ -33,13 +39,17 @@ app.delete('/tasks/:id', (req, res) => {
 
 app.put('/tasks/:id', (req, res) => {
   const { id } = req.params;
-  const found = tasks.find(task => task.id === id);
-  if (found.completed) {
-    found.completed = false;
-  } else {
-    found.completed = true;
+  const taskIndex = tasks.findIndex(task => task.id === parseInt(id));
+
+  if (taskIndex === -1) {
+    return res.status(404).json({ message: 'Task not found' });
   }
-  res.status(200).json(found);
+
+  const updatedTask = { ...tasks[taskIndex], completed: !tasks[taskIndex].completed};
+
+  tasks = tasks.map(task => task.id === parseInt(id) ? updatedTask : task);
+
+  res.status(200).json(updatedTask);
 })
 
 
